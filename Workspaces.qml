@@ -13,18 +13,21 @@ import qs.Ui
 //   maxWorkspaces   - how many workspace slots to always show. Default 5,
 //                     clamped to 1-36 (see clampMaxWorkspaces()).
 //   indicatorColor  - "foreground" | "accent" | "urgent" | "muted". Default "foreground".
-//   indicatorRadius - corner radius of the pill, in px. Default 6.
-//   indicatorXInset - extra padding (left+right) around the pill, in px. Default 2.
+//   indicatorRadius - corner radius of the pill, in px. Default 6, clamped
+//                     to 0-200 (see clampPixels()).
+//   indicatorXInset - extra padding (left+right) around the pill, in px.
+//                     Default 2, clamped to 0-200.
 //   indicatorYInset - shrinks the pill's side length from the bar's height,
-//                     in px on each edge. The pill is always square: its
-//                     side is barSize - indicatorYInset * 2, and
-//                     indicatorXInset only adds padding around that square
-//                     rather than resizing it. A single bar-widget can't
-//                     grow the bar's own thickness (every other widget
-//                     shares it) the way it can grow its own cell's width,
-//                     so making the pill bigger than the default means
-//                     lowering indicatorYInset or raising the bar's own
-//                     height (shell.toml's [bar] size-horizontal). Default 6.
+//                     in px on each edge. Default 6, clamped to 0-200. The
+//                     pill is always square: its side is
+//                     barSize - indicatorYInset * 2, and indicatorXInset
+//                     only adds padding around that square rather than
+//                     resizing it. A single bar-widget can't grow the
+//                     bar's own thickness (every other widget shares it)
+//                     the way it can grow its own cell's width, so making
+//                     the pill bigger than the default means lowering
+//                     indicatorYInset or raising the bar's own height
+//                     (shell.toml's [bar] size-horizontal).
 //   indicatorBold   - bold the active workspace's number. Default true.
 BarWidget {
   id: root
@@ -42,9 +45,22 @@ BarWidget {
   }
   readonly property int maxWorkspaces: clampMaxWorkspaces(setting("maxWorkspaces", 5))
   readonly property string indicatorColorName: String(setting("indicatorColor", "foreground"))
-  readonly property real indicatorRadius: Number(setting("indicatorRadius", 6))
-  readonly property real indicatorXInset: Number(setting("indicatorXInset", 2))
-  readonly property real indicatorYInset: Number(setting("indicatorYInset", 6))
+
+  // Clamped for the same reason as maxWorkspaces: these are user-editable
+  // pixel values that feed straight into this cell's own geometry (and,
+  // through pillSize, everything derived from it). A large indicatorXInset
+  // builds an arbitrarily wide cell, and a large negative indicatorYInset
+  // makes pillSize (barSize - indicatorYInset * 2) arbitrarily large --
+  // either can make the shell allocate and render an oversized surface on
+  // the shared UI thread. 200px comfortably covers any real layout.
+  function clampPixels(value, fallback) {
+    var n = Number(value)
+    if (!isFinite(n)) return fallback
+    return Math.max(0, Math.min(200, n))
+  }
+  readonly property real indicatorRadius: clampPixels(setting("indicatorRadius", 6), 6)
+  readonly property real indicatorXInset: clampPixels(setting("indicatorXInset", 2), 2)
+  readonly property real indicatorYInset: clampPixels(setting("indicatorYInset", 6), 6)
   readonly property bool indicatorBold: setting("indicatorBold", true) !== false
   // The pill is always square, sized off the bar's own (fixed, shared)
   // thickness rather than the per-cell width, which is free to grow.

@@ -40,9 +40,9 @@ All settings are optional and set per-instance in
 |---|---|---|---|
 | `maxWorkspaces` | number | `5` | How many workspace slots to always show, clamped to 1-36. A workspace beyond this count still shows up once something is open on it. |
 | `indicatorColor` | `"foreground"` \| `"accent"` \| `"urgent"` \| `"muted"` | `"foreground"` | Which theme color fills the active workspace's pill. |
-| `indicatorRadius` | number (px) | `6` | Corner radius of the pill. |
-| `indicatorXInset` | number (px) | `2` | Extra padding (left + right) around the pill, added to the cell -- doesn't change the pill's own size. |
-| `indicatorYInset` | number (px) | `6` | Shrinks the pill's side length, `barSize - indicatorYInset * 2` on each edge. |
+| `indicatorRadius` | number (px) | `6` | Corner radius of the pill, clamped to 0-200. |
+| `indicatorXInset` | number (px) | `2` | Extra padding (left + right) around the pill, added to the cell -- doesn't change the pill's own size. Clamped to 0-200. |
+| `indicatorYInset` | number (px) | `6` | Shrinks the pill's side length, `barSize - indicatorYInset * 2` on each edge. Clamped to 0-200. |
 | `indicatorBold` | boolean | `true` | Bold the active workspace's number. Set `false` for a normal weight. |
 
 The pill is always a square: its side length is the bar's own height minus

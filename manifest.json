@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "charlieras262.pill-workspaces",
   "name": "Pill Workspaces",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "author": "Charlieras262",
   "description": "Workspace indicators with a rounded pill for the active workspace",
   "kinds": [
