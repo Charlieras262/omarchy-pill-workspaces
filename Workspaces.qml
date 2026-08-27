@@ -77,15 +77,29 @@ BarWidget {
   // Always shows slots 1..maxWorkspaces, plus any higher workspace that
   // already has something open on it (so nothing already in use disappears
   // just because it's past the configured count).
+  // Hard ceiling on the *total* merged id count, not just the configured
+  // maxWorkspaces prefix: Hyprland.workspaces.values is compositor-sourced,
+  // not user config, but nothing stops a local client from creating an
+  // arbitrary number of real workspaces, and every id collected here still
+  // ends up as a Repeater cell on the shared shell UI thread. The currently
+  // focused workspace is always kept even if that means going one over, so
+  // a legitimate-but-high workspace id never silently disappears from the
+  // bar -- the array stays bounded either way, never proportional to
+  // whatever a hostile client decides to create.
+  readonly property int maxTotalWorkspaceIds: 36
+
   function workspaceIds() {
     var ids = []
     for (var n = 1; n <= root.maxWorkspaces; n++) ids.push(n)
 
     var values = Hyprland.workspaces.values
-    for (var i = 0; i < values.length; i++) {
+    for (var i = 0; i < values.length && ids.length < root.maxTotalWorkspaceIds; i++) {
       var id = values[i].id
       if (id > 0 && ids.indexOf(id) === -1) ids.push(id)
     }
+
+    var focused = Hyprland.focusedWorkspace
+    if (focused && focused.id > 0 && ids.indexOf(focused.id) === -1) ids.push(focused.id)
 
     ids.sort(function(left, right) { return left - right })
     return ids
