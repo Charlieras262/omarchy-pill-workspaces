@@ -28,7 +28,8 @@ All settings are optional and set per-instance in
   "indicatorColor": "accent",
   "indicatorRadius": 8,
   "indicatorXInset": 2,
-  "indicatorYInset": 4
+  "indicatorYInset": 4,
+  "indicatorBold": false
 }
 ```
 
@@ -39,6 +40,7 @@ All settings are optional and set per-instance in
 | `indicatorRadius` | number (px) | `6` | Corner radius of the pill. |
 | `indicatorXInset` | number (px) | `0` | Horizontal gap (left + right) between the pill and the edge of its cell. |
 | `indicatorYInset` | number (px) | `6` | Vertical gap (top + bottom) between the pill and the edge of the bar, so it reads as a pill rather than a full-height block. |
+| `indicatorBold` | boolean | `true` | Bold the active workspace's number. Set `false` for a normal weight. |
 
 > Upgrading from 1.0.1 or earlier: `indicatorInset` was split into
 > `indicatorXInset`/`indicatorYInset`. If you had set `indicatorInset`,

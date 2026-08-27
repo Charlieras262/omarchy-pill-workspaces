@@ -15,6 +15,7 @@ import qs.Ui
 //   indicatorRadius - corner radius of the pill, in px. Default 6.
 //   indicatorXInset - horizontal inset (left+right) of the pill, in px. Default 0.
 //   indicatorYInset - vertical inset (top+bottom) of the pill, in px. Default 6.
+//   indicatorBold   - bold the active workspace's number. Default true.
 BarWidget {
   id: root
   moduleName: "charlieras262.pill-workspaces"
@@ -24,6 +25,7 @@ BarWidget {
   readonly property real indicatorRadius: Number(setting("indicatorRadius", 6))
   readonly property real indicatorXInset: Number(setting("indicatorXInset", 0))
   readonly property real indicatorYInset: Number(setting("indicatorYInset", 6))
+  readonly property bool indicatorBold: setting("indicatorBold", true) !== false
 
   function workspaceById(id) {
     var values = Hyprland.workspaces.values
@@ -118,6 +120,7 @@ BarWidget {
         }
 
         WidgetButton {
+          id: workspaceButton
           anchors.fill: parent
           bar: root.bar
           text: cell.modelData === 10 ? "0" : String(cell.modelData)
@@ -126,7 +129,22 @@ BarWidget {
           opacity: cell.occupied || cell.focused ? 1 : 0.5
           horizontalMargin: 6
           verticalPadding: 6
+          // WidgetButton has no bold passthrough, so its own label is hidden
+          // and the number is drawn here instead, matching its font/color/
+          // opacity but adding font.bold for the focused workspace.
+          labelVisible: false
           onPressed: function() { root.focusWorkspace(cell.modelData) }
+        }
+
+        Text {
+          anchors.centerIn: parent
+          text: workspaceButton.text
+          color: workspaceButton.foreground
+          opacity: workspaceButton.opacity
+          font.family: workspaceButton.fontFamily
+          font.pixelSize: workspaceButton.fontSize
+          font.bold: root.indicatorBold && cell.focused
+          renderType: Text.NativeRendering
         }
       }
     }
