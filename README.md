@@ -40,6 +40,21 @@ All settings are optional and set per-instance in
 
 The file hot-reloads — no restart needed after editing it.
 
+## Remove
+
+```bash
+omarchy plugin remove charlieras262.pill-workspaces
+```
+
+This removes the plugin's files and switches the bar's workspaces slot
+back to the stock `omarchy.workspaces` widget.
+
+## Dependencies
+
+None beyond what a stock Omarchy install already ships — this is plain
+QML built on Omarchy's own `qs.Commons`/`qs.Ui` modules and the
+Quickshell Hyprland integration, no external packages or services.
+
 ## Why not just theme the stock widget?
 
 Omarchy's built-in `omarchy.workspaces` widget only changes opacity for the
