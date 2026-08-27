@@ -99,7 +99,12 @@ BarWidget {
         readonly property bool occupied: workspace !== null && workspace.toplevels.values.length > 0
         readonly property bool focused: Hyprland.focusedWorkspace !== null && Hyprland.focusedWorkspace.id === modelData
 
-        implicitWidth: root.vertical ? root.barSize : Style.space(20)
+        // indicatorXInset must widen the cell, not just shrink the pill
+        // inside a fixed-width one -- otherwise a large inset crushes the
+        // pill (and the number inside it) down to a sliver instead of just
+        // adding breathing room around it, on the horizontal layout's fairly
+        // tight per-cell width.
+        implicitWidth: root.vertical ? root.barSize : Style.space(20) + root.indicatorXInset * 2
         implicitHeight: root.barSize
 
         Rectangle {
