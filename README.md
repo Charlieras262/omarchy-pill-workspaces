@@ -7,7 +7,7 @@ dim/idle opacity. The number's color automatically picks whichever theme
 color contrasts best against the pill, so it stays legible across light
 and dark themes alike.
 
-![Pill Workspaces in the bar, next to its shell.json configuration](preview.png)
+![Pill Workspaces: rounded, theme-colored active-workspace indicator](preview.png)
 
 ## Install
 
