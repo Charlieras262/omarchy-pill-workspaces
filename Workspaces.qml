@@ -13,7 +13,7 @@ import qs.Ui
 //   maxWorkspaces   - how many workspace slots to always show. Default 5.
 //   indicatorColor  - "foreground" | "accent" | "urgent" | "muted". Default "foreground".
 //   indicatorRadius - corner radius of the pill, in px. Default 6.
-//   indicatorXInset - horizontal inset (left+right) of the pill, in px. Default 0.
+//   indicatorXInset - horizontal inset (left+right) of the pill, in px. Default 2.
 //   indicatorYInset - vertical inset (top+bottom) of the pill, in px. Default 6.
 //   indicatorBold   - bold the active workspace's number. Default true.
 BarWidget {
@@ -23,7 +23,7 @@ BarWidget {
   readonly property int maxWorkspaces: Number(setting("maxWorkspaces", 5))
   readonly property string indicatorColorName: String(setting("indicatorColor", "foreground"))
   readonly property real indicatorRadius: Number(setting("indicatorRadius", 6))
-  readonly property real indicatorXInset: Number(setting("indicatorXInset", 0))
+  readonly property real indicatorXInset: Number(setting("indicatorXInset", 2))
   readonly property real indicatorYInset: Number(setting("indicatorYInset", 6))
   readonly property bool indicatorBold: setting("indicatorBold", true) !== false
 
