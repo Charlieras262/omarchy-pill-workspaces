@@ -10,7 +10,8 @@ import qs.Ui
 // contrasts best against the fill so it stays legible across themes.
 //
 // Configurable per-instance via shell.json (all optional):
-//   maxWorkspaces   - how many workspace slots to always show. Default 5.
+//   maxWorkspaces   - how many workspace slots to always show. Default 5,
+//                     clamped to 1-36 (see clampMaxWorkspaces()).
 //   indicatorColor  - "foreground" | "accent" | "urgent" | "muted". Default "foreground".
 //   indicatorRadius - corner radius of the pill, in px. Default 6.
 //   indicatorXInset - extra padding (left+right) around the pill, in px. Default 2.
@@ -29,7 +30,17 @@ BarWidget {
   id: root
   moduleName: "charlieras262.pill-workspaces"
 
-  readonly property int maxWorkspaces: Number(setting("maxWorkspaces", 5))
+  // Clamped: shell.json is user-editable, and an oversized value here would
+  // build an equally oversized workspaceIds() array and Repeater on the
+  // shared shell UI thread -- a large enough number can freeze the whole
+  // shell, not just this widget. 36 comfortably covers any real workspace
+  // count while keeping a bad value cheap to render.
+  function clampMaxWorkspaces(value) {
+    var n = Math.floor(Number(value))
+    if (!isFinite(n)) return 5
+    return Math.max(1, Math.min(36, n))
+  }
+  readonly property int maxWorkspaces: clampMaxWorkspaces(setting("maxWorkspaces", 5))
   readonly property string indicatorColorName: String(setting("indicatorColor", "foreground"))
   readonly property real indicatorRadius: Number(setting("indicatorRadius", 6))
   readonly property real indicatorXInset: Number(setting("indicatorXInset", 2))

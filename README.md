@@ -38,7 +38,7 @@ All settings are optional and set per-instance in
 
 | Key | Type | Default | Description |
 |---|---|---|---|
-| `maxWorkspaces` | number | `5` | How many workspace slots to always show. A workspace beyond this count still shows up once something is open on it. |
+| `maxWorkspaces` | number | `5` | How many workspace slots to always show, clamped to 1-36. A workspace beyond this count still shows up once something is open on it. |
 | `indicatorColor` | `"foreground"` \| `"accent"` \| `"urgent"` \| `"muted"` | `"foreground"` | Which theme color fills the active workspace's pill. |
 | `indicatorRadius` | number (px) | `6` | Corner radius of the pill. |
 | `indicatorXInset` | number (px) | `2` | Extra padding (left + right) around the pill, added to the cell -- doesn't change the pill's own size. |
