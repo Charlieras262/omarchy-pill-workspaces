@@ -13,8 +13,17 @@ import qs.Ui
 //   maxWorkspaces   - how many workspace slots to always show. Default 5.
 //   indicatorColor  - "foreground" | "accent" | "urgent" | "muted". Default "foreground".
 //   indicatorRadius - corner radius of the pill, in px. Default 6.
-//   indicatorXInset - horizontal inset (left+right) of the pill, in px. Default 2.
-//   indicatorYInset - vertical inset (top+bottom) of the pill, in px. Default 6.
+//   indicatorXInset - extra padding (left+right) around the pill, in px. Default 2.
+//   indicatorYInset - shrinks the pill's side length from the bar's height,
+//                     in px on each edge. The pill is always square: its
+//                     side is barSize - indicatorYInset * 2, and
+//                     indicatorXInset only adds padding around that square
+//                     rather than resizing it. A single bar-widget can't
+//                     grow the bar's own thickness (every other widget
+//                     shares it) the way it can grow its own cell's width,
+//                     so making the pill bigger than the default means
+//                     lowering indicatorYInset or raising the bar's own
+//                     height (shell.toml's [bar] size-horizontal). Default 6.
 //   indicatorBold   - bold the active workspace's number. Default true.
 BarWidget {
   id: root
@@ -26,6 +35,9 @@ BarWidget {
   readonly property real indicatorXInset: Number(setting("indicatorXInset", 2))
   readonly property real indicatorYInset: Number(setting("indicatorYInset", 6))
   readonly property bool indicatorBold: setting("indicatorBold", true) !== false
+  // The pill is always square, sized off the bar's own (fixed, shared)
+  // thickness rather than the per-cell width, which is free to grow.
+  readonly property real pillSize: Math.max(0, barSize - indicatorYInset * 2)
 
   function workspaceById(id) {
     var values = Hyprland.workspaces.values
@@ -101,20 +113,18 @@ BarWidget {
         readonly property bool occupied: workspace !== null && workspace.toplevels.values.length > 0
         readonly property bool focused: Hyprland.focusedWorkspace !== null && Hyprland.focusedWorkspace.id === modelData
 
-        // indicatorXInset must widen the cell, not just shrink the pill
-        // inside a fixed-width one -- otherwise a large inset crushes the
-        // pill (and the number inside it) down to a sliver instead of just
-        // adding breathing room around it, on the horizontal layout's fairly
-        // tight per-cell width.
-        implicitWidth: root.vertical ? root.barSize : Style.space(20) + root.indicatorXInset * 2
+        // indicatorXInset widens the cell around the (fixed-size, square)
+        // pill instead of shrinking it -- otherwise a large inset crushes
+        // the pill down to a sliver instead of just adding breathing room.
+        // The perpendicular dimension can't grow the same way: it's the
+        // bar's own shared thickness, not this cell's own footprint.
+        implicitWidth: root.vertical ? root.barSize : Math.max(Style.space(20), root.pillSize) + root.indicatorXInset * 2
         implicitHeight: root.barSize
 
         Rectangle {
-          anchors.fill: parent
-          anchors.leftMargin: root.indicatorXInset
-          anchors.rightMargin: root.indicatorXInset
-          anchors.topMargin: root.indicatorYInset
-          anchors.bottomMargin: root.indicatorYInset
+          anchors.centerIn: parent
+          width: root.pillSize
+          height: root.pillSize
           color: cell.focused ? root.activeIndicatorColor : "transparent"
           radius: root.indicatorRadius
         }
