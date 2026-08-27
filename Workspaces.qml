@@ -10,10 +10,11 @@ import qs.Ui
 // contrasts best against the fill so it stays legible across themes.
 //
 // Configurable per-instance via shell.json (all optional):
-//   maxWorkspaces  - how many workspace slots to always show. Default 5.
-//   indicatorColor - "foreground" | "accent" | "urgent" | "muted". Default "foreground".
+//   maxWorkspaces   - how many workspace slots to always show. Default 5.
+//   indicatorColor  - "foreground" | "accent" | "urgent" | "muted". Default "foreground".
 //   indicatorRadius - corner radius of the pill, in px. Default 6.
-//   indicatorInset  - vertical inset (top+bottom) of the pill, in px. Default 6.
+//   indicatorXInset - horizontal inset (left+right) of the pill, in px. Default 0.
+//   indicatorYInset - vertical inset (top+bottom) of the pill, in px. Default 6.
 BarWidget {
   id: root
   moduleName: "charlieras262.pill-workspaces"
@@ -21,7 +22,8 @@ BarWidget {
   readonly property int maxWorkspaces: Number(setting("maxWorkspaces", 5))
   readonly property string indicatorColorName: String(setting("indicatorColor", "foreground"))
   readonly property real indicatorRadius: Number(setting("indicatorRadius", 6))
-  readonly property real indicatorInset: Number(setting("indicatorInset", 6))
+  readonly property real indicatorXInset: Number(setting("indicatorXInset", 0))
+  readonly property real indicatorYInset: Number(setting("indicatorYInset", 6))
 
   function workspaceById(id) {
     var values = Hyprland.workspaces.values
@@ -102,8 +104,10 @@ BarWidget {
 
         Rectangle {
           anchors.fill: parent
-          anchors.topMargin: root.indicatorInset
-          anchors.bottomMargin: root.indicatorInset
+          anchors.leftMargin: root.indicatorXInset
+          anchors.rightMargin: root.indicatorXInset
+          anchors.topMargin: root.indicatorYInset
+          anchors.bottomMargin: root.indicatorYInset
           color: cell.focused ? root.activeIndicatorColor : "transparent"
           radius: root.indicatorRadius
         }

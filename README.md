@@ -27,7 +27,8 @@ All settings are optional and set per-instance in
   "maxWorkspaces": 6,
   "indicatorColor": "accent",
   "indicatorRadius": 8,
-  "indicatorInset": 4
+  "indicatorXInset": 2,
+  "indicatorYInset": 4
 }
 ```
 
@@ -36,7 +37,13 @@ All settings are optional and set per-instance in
 | `maxWorkspaces` | number | `5` | How many workspace slots to always show. A workspace beyond this count still shows up once something is open on it. |
 | `indicatorColor` | `"foreground"` \| `"accent"` \| `"urgent"` \| `"muted"` | `"foreground"` | Which theme color fills the active workspace's pill. |
 | `indicatorRadius` | number (px) | `6` | Corner radius of the pill. |
-| `indicatorInset` | number (px) | `6` | Vertical gap (top + bottom) between the pill and the edge of the bar, so it reads as a pill rather than a full-height block. |
+| `indicatorXInset` | number (px) | `0` | Horizontal gap (left + right) between the pill and the edge of its cell. |
+| `indicatorYInset` | number (px) | `6` | Vertical gap (top + bottom) between the pill and the edge of the bar, so it reads as a pill rather than a full-height block. |
+
+> Upgrading from 1.0.1 or earlier: `indicatorInset` was split into
+> `indicatorXInset`/`indicatorYInset`. If you had set `indicatorInset`,
+> replace it with `indicatorYInset` (same meaning, same default) and add
+> `indicatorXInset` only if you also want a horizontal gap.
 
 The file hot-reloads — no restart needed after editing it.
 
