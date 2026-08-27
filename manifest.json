@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "id": "charlieras262.pill-workspaces",
+  "name": "Pill Workspaces",
+  "version": "1.0.0",
+  "author": "Charlieras262",
+  "description": "Workspace indicators with a rounded pill for the active workspace",
+  "kinds": [
+    "bar-widget"
+  ],
+  "entryPoints": {
+    "barWidget": "Workspaces.qml"
+  },
+  "barWidget": {
+    "displayName": "Pill Workspaces",
+    "description": "Workspace indicators with a rounded pill for the active workspace",
+    "category": "Compositor",
+    "allowMultiple": false
+  }
+}
